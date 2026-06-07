@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBox - Refeições para Escolas e Universidades</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Modal de Login/Visitante -->
+    <div id="modal-acesso" class="modal-acesso">
+        <div class="modal-content-acesso">
+            <h2>Bem-vindo ao FoodBox</h2>
+            <p>Escolha como deseja continuar:</p>
+            
+            <div class="modal-botoes">
+                <button class="btn-modal btn-login" onclick="abrirLoginModal('instituicao')">🔐 Sou Instituição</button>
+                <button class="btn-modal btn-cliente" onclick="abrirLoginModal('cliente-normal')">👤 Sou Cliente Normal</button>
+                <button class="btn-modal btn-noaccount" onclick="continuarComoVisitante()">❓ Não tenho conta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div id="modal-login" class="modal-login">
+        <div class="modal-content-login">
+            <button class="btn-voltar" onclick="voltarParaAcesso()">← Voltar</button>
+            <h3>Acesso de Instituição</h3>
+            
+            <form onsubmit="fazerLogin(event)">
+                <div class="form-group">
+                    <label for="email-login">Email da Instituição *</label>
+                    <input type="email" id="email-login" placeholder="contato@instituicao.pt" required>
+                </div>
+                <div class="form-group">
+                    <label for="password-login">Password *</label>
+                    <input type="password" id="password-login" placeholder="Sua password" required>
+                </div>
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header/Navbar -->
+    <header class="header">
+        <div class="container-header">
+            <div class="logo">
+                <h1>🍱 FoodBox</h1>
+                <p class="tagline">Refeições em caixas, qualidade garantida</p>
+            </div>
+            <nav class="nav">
+                <a href="#" onclick="scrollToSection('home'); return false;">Home</a>
+                <a href="#" onclick="scrollToSection('como-funciona'); return false;">Como Funciona</a>
+                <a href="#" onclick="scrollToSection('tabela-precos'); return false;">Preços e Descontos</a>
+                <a href="#" onclick="scrollToSection('inscricao'); return false;">Marcar Refeições</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Conta ▼</button>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="scrollToSection('inscricao'); switchTabDirect('login-form'); return false;">Login</a>
+                        <a href="#" onclick="scrollToSection('inscricao'); switchTabDirect('choose-account'); return false;">Criar Conta</a>
+                    </div>
+                </div>
+                <button class="btn-nav btn-sair" id="btn-sair" style="display: none;" onclick="fazerLogout()">Sair</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Refeições Saudáveis Entregues em Caixas</h2>
+            <p>Para escolas, universidades, empresas e pessoas individuais. Quanto mais encomendas, maior o desconto!</p>
+            <button class="btn-primary" onclick="scrollToSection('inscricao')">Começar Agora</button>
+        </div>
+    </section>
+
+    <!-- Como Funciona Section -->
+    <section id="como-funciona" class="como-funciona">
+        <div class="container">
+            <h2>Como Funciona</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Criar Conta</h3>
+                    <p>Registar como instituição ou cliente individual</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Escolher Refeições</h3>
+                    <p>Marcar as refeições desejadas com opções (vegetariana, sem glúten, etc.)</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Aproveitar Descontos</h3>
+                    <p>Quanto mais refeições encomendar, maior o desconto aplicado</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Receber Refeições</h3>
+                    <p>Entrega diária, nas datas que marcou</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabela de Preços e Descontos -->
+    <section id="tabela-precos" class="tabela-precos">
+        <div class="container">
+            <h2>Tabela de Preços e Descontos</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px; font-size: 16px;">
+                Desconto aplicado no valor total, conforme o número de refeições encomendadas
+            </p>
+            <table class="price-table">
+                <thead>
+                    <tr>
+                        <th>Número de Refeições</th>
+                        <th>Preço por Caixa</th>
+                        <th>Desconto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1 - 10</td>
+                        <td>€9.00</td>
+                        <td>Sem desconto</td>
+                    </tr>
+                    <tr>
+                        <td>11 - 25</td>
+                        <td>€8.55</td>
+                        <td>-5%</td>
+                    </tr>
+                    <tr>
+                        <td>26 - 50</td>
+                        <td>€8.10</td>
+                        <td>-10%</td>
+                    </tr>
+                    <tr>
+                        <td>51 - 100</td>
+                        <td>€7.65</td>
+                        <td>-15%</td>
+                    </tr>
+                    <tr>
+                        <td>100+</td>
+                        <td>€6.75</td>
+                        <td>-25%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Seção de Inscrição/Reserva -->
+    <section id="inscricao" class="inscricao">
+        <div class="container">
+            <h2>Gerir Sua Conta</h2>
+            
+            <!-- Tabs para escolher tipo de utilizador -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab('login-form')" style="border-bottom-color: var(--primary-color);">🔐 Login</button>
+                <button class="tab-button" onclick="switchTab('choose-account')">👥 Criar Conta</button>
+                <button class="tab-button" onclick="switchTab('lista-reservas')" id="tab-reservas" style="display: none;">📋 Minhas Reservas</button>
+            </div>
+
+            <!-- Perguntar tipo de conta -->
+            <div id="choose-account" class="form-section">
+                <h3>Que tipo de conta deseja criar?</h3>
+                <div class="account-type-choice">
+                    <button class="btn-primary" onclick="selectAccountType('cliente-form')">👤 Cliente Normal</button>
+                    <button class="btn-primary" onclick="selectAccountType('instituicao-form')">🏫 Instituição</button>
+                </div>
+            </div>
+
+            <!-- Formulário de Login -->
+            <div id="login-form" class="form-section active">
+                <h3>Fazer Login</h3>
+                <form onsubmit="fazerLoginDaSecao(event)">
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email-login-secao" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" id="password-login-secao" placeholder="Sua password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Entrar</button>
+                </form>
+            </div>
+            <div id="cliente-form" class="form-section">
+                <h3>Registar como Cliente Normal</h3>
+                <form onsubmit="registarClienteNormal(event)">
+                    <div class="form-group">
+                        <label>Nome Completo *</label>
+                        <input type="text" id="nome-cliente" placeholder="João Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label>NIF *</label>
+                        <input type="text" id="nif-cliente" placeholder="123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email-cliente" placeholder="joao@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone *</label>
+                        <input type="tel" id="telefone-cliente" placeholder="912345678" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" id="password-cliente" placeholder="Escolha uma password segura" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Criar Conta</button>
+                </form>
+            </div>
+
+            <!-- Formulário Instituição -->
+            <div id="instituicao-form" class="form-section">
+                <h3>Registar Instituição</h3>
+                <form onsubmit="registarInstituicao(event)">
+                    <div class="form-group">
+                        <label>Nome da Instituição *</label>
+                        <input type="text" id="nome-instituicao" placeholder="Ex: Escola Secundária XYZ" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tipo de Instituição *</label>
+                        <select id="tipo-instituicao" required>
+                            <option value="">Selecionar tipo</option>
+                            <option value="escola-primaria">Escola Primária</option>
+                            <option value="escola-secundaria">Escola Secundária</option>
+                            <option value="universidade">Universidade</option>
+                            <option value="instituto">Instituto Politécnico</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email-instituicao" placeholder="contato@instituicao.pt" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" id="password-instituicao" placeholder="Escolha uma password segura" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contacto (Telefone) *</label>
+                        <input type="tel" id="telefone-instituicao" placeholder="912345678" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Morada - Rua/Avenida *</label>
+                        <input type="text" id="rua-instituicao" placeholder="Ex: Rua das Flores, 123" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cidade *</label>
+                        <input type="text" id="cidade-instituicao" placeholder="Lisboa" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Código Postal *</label>
+                        <input type="text" id="codigo-postal-instituicao" placeholder="1000-001" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Registar Instituição</button>
+                </form>
+            </div>
+
+            <!-- Tabela de Reservas (após login simulado) -->
+            <!-- Modal de Pagamento -->
+            <div id="modal-pagamento" class="modal-pagamento" style="display: none;">
+                <div class="modal-content-pagamento">
+                    <h3>💳 Completar Pagamento</h3>
+                    <div class="resumo-pagamento">
+                        <p><strong id="resumo-dias">14 dias</strong> de refeições</p>
+                        <p>Preço total: <strong id="resumo-total">€0.00</strong></p>
+                    </div>
+                    <form onsubmit="processarPagamento(event)">
+                        <div class="form-group">
+                            <label>Nome Completo (no cartão) *</label>
+                            <input type="text" id="pagamento-nome" placeholder="Ex: João Silva" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Número do Cartão *</label>
+                            <input type="text" id="pagamento-cartao" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        </div>
+                        <div style="display: flex; gap: 20px;">
+                            <button type="button" class="btn-secondary" onclick="cancelarPagamento()" style="flex: 1;">Cancelar</button>
+                            <button type="submit" class="btn-primary" style="flex: 1;">Pagar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="lista-reservas" class="form-section reservas-section" style="display: none;">
+                <h3>Minhas Reservas</h3>
+                <div class="reserva-form">
+                    <div class="form-group">
+                        <label>Selecionar Datas (até 14 dias) *</label>
+                        <div class="datas-selection">
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <input type="date" id="nova-data" placeholder="Selecionar data">
+                                <button type="button" class="btn-secondary" onclick="adicionarData()">Adicionar Data</button>
+                            </div>
+                            <div id="datas-selecionadas" class="datas-list">
+                                <!-- Preenchido por JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Número de Refeições *</label>
+                        <input type="number" id="num-caixas" min="1" placeholder="Quantidade de refeições">
+                    </div>
+
+                    <div class="form-group-checkboxes">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="refeicao-vegetariana">
+                            🥗 Vegetariana
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="refeicao-sem-gluten">
+                            🌾 Sem Glúten
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Observações (Alergias, Preferências, etc.)</label>
+                        <textarea id="refeicao-observacoes" placeholder="Escreva aqui qualquer informação adicional sobre as refeições..." rows="4"></textarea>
+                    </div>
+
+                    <button class="btn-primary" onclick="adicionarReserva()">Adicionar Reserva</button>
+                </div>
+
+                <div class="resumo-preco">
+                    <p>Preço por caixa: <strong id="preco-unitario">€5.50</strong></p>
+                    <p>Desconto aplicado: <strong id="desconto-aplicado">0%</strong></p>
+                    <p>Total: <strong id="total-preco">€0.00</strong></p>
+                </div>
+
+                <table class="reservas-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Quantidade</th>
+                            <th>Preço Unit.</th>
+                            <th>Total</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservas-list">
+                        <!-- Preenchido por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer com Parceria -->
+    <footer class="footer">
+        <div class="container-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FoodBox</h4>
+                    <p>Refeições de qualidade para instituições educacionais</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>Email: contato@foodbox.pt</p>
+                    <p>Telefone: 912345678</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#como-funciona">Como Funciona</a>
+                </div>
+            </div>
+            
+            <!-- Barra de Parceria -->
+            <div class="partnership-bar">
+                <span>Em parceria com:</span>
+                <div class="partner-logos">
+                    <!-- replace "istec-logo.png" with the real image file in the project folder -->
+                    <!-- additional partner logos -->
+                    <img src="OIP.webp" alt="Stock Pack Logo">
+                    <img src="Stripe-logo-featured.jpg" alt="Stripe Logo">
+                    <img src="Prozis-660x330.png" alt="Prozis Logo">
+                    <img src="R.png" alt="Cozinca Logo">
+                    <img src="155720_ISTEC.avif" alt="ISTEC Logo" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 400 100\'%3E%3Cdefs%3E%3Cstyle%3E.istec-text %7B font-family: Arial, sans-serif; fill: %23000; %7D .istec-main %7B font-size: 28px; font-weight: bold; %7D .istec-sub %7B font-size: 11px; letter-spacing: 0.5px; %7D%3C/style%3E%3C/defs%3E%3C!-- Logo Symbol --%3E%3Cg id=\'logo-symbol\'%3E%3Cpath d=\'M 35 25 Q 38 30, 35 35 Q 32 30, 35 25\' fill=\'%23d81b1b\' stroke=\'%23d81b1b\' stroke-width=\'2\'/%3E%3Cpath d=\'M 35 22 Q 42 27, 42 35 Q 42 43, 35 48 Q 28 43, 28 35 Q 28 27, 35 22\' fill=\'%23d81b1b\' opacity=\'0.9\'/%3E%3Crect x=\'20\' y=\'20\' width=\'30\' height=\'30\' rx=\'3\' fill=\'none\' stroke=\'%23d81b1b\' stroke-width=\'1.5\' opacity=\'0.5\'/%3E%3C/g%3E%3C!-- Text --%3E%3Ctext x=\'65\' y=\'42\' class=\'istec-text istec-main\'%3EISTEC%3C/text%3E%3Ctext x=\'70\' y=\'65\' class=\'istec-text istec-sub\'%3EINSTITUTO SUPERIOR DE TECNOLOGIAS AVANÇADAS%3C/text%3E%3C/svg%3E';">
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 FoodBox. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!--
+        Se usar um túnel (ngrok) ou um backend hospedado em URL pública,
+        defina a variável abaixo para garantir que o frontend chama o servidor correto.
+        Exemplo:
+            window.__API_BASE__ = 'https://abcd1234.ngrok.io';
+    -->
+    <script>
+        // URL pública criada via ngrok (válida enquanto a sessão estiver ativa)
+        window.__API_BASE__ = 'https://nonappealing-caitlin-subacrid.ngrok-free.dev';
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
